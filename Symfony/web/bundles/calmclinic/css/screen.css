@@ -4,3 +4,37 @@
     border: 1px solid black;
     border-radius: 3px;
 }
+
+#leftMenu{
+    background-color: #EDE9E3;
+    width: 200px;
+    height: 800px;
+    float: left;
+}
+
+#content{
+    width: 800px;
+    height: 800px;
+    float: left;
+    border: 1px solid black;
+}
+
+.title{
+    border-bottom: 2px solid blue;
+    width: 200px;
+    margin: 0px 0px 10px 20px;
+}
+
+.control-button{
+    margin: 20px 0px 20px 20px;
+}
+
+.doc-table th{
+    background-color: #CCCCCC; 
+    text-align: left; 
+}
+
+.doc-table{ 
+    text-align: left; 
+    margin-left: 20px;    
+}

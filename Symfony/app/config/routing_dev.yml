@@ -5,8 +5,16 @@ _start:
     
 _test:    
     pattern:  /test
-    defaults: { _controller: StartStartBundle:Start:test }    	
+    defaults: { _controller: StartStartBundle:Start:test }
 
+doc:
+    pattern: /doc
+    defaults: { _controller: StartStartBundle:Doc:index }
+
+doc_edit:
+    pattern: /doc-edit
+    defaults: { _controller: StartStartBundle:Doc:edit }
+    
 login:
     pattern: /login
     defaults: { _controller: StartStartBundle:Auth:login }

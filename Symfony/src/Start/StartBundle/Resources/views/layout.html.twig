@@ -7,8 +7,49 @@
     </head>
     <body>
 {% block leftmenu%}
+<div id="leftMenu">
+    <h3>Hi, {{name}}</h3>
+    <table>
+        <tr><td>
+        <a href="#">Dashboard</a>
+        </td></tr>
+        <tr><td>
+        <a href="#">Account</a>
+        </td></tr>
+        <tr><td>
+        <a href="#">Invoices</a>
+        </td></tr>
+        <tr><td>
+        <a href="#">Reports</a>
+        </td></tr>                        
+        <tr><td>
+{% if is_granted('ROLE_ADMIN') %}        
+        <h3>Manage</h3>
+        </td></tr>
+        <tr><td>
+        <a href="#">Users</a>
+        </td></tr> 
+        <tr><td>
+        <a href="#">Invoices</a>
+        </td></tr>           
+        <tr><td>
+        <a href="#">Reports</a>
+        </td></tr>
+        <tr><td>
+{% endif %}
+        </td></tr>        
+        <tr><td>
+        <a href="{{ path('doc') }}">Documentation</a>
+        </td></tr>
+        <tr><td>
+        <a href="{{ path('logout') }}">Logout</a>
+        </td></tr>                            
+    </table>
+</div>
 {% endblock %}    
 {% block content %}
+<div id="content">
+</div>
 {% endblock %}
     </body>
 </html>

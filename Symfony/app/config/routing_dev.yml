@@ -1,6 +1,23 @@
-_welcome:
+
+_start:
     pattern:  /
-    defaults: { _controller: AcmeDemoBundle:Welcome:index }
+    defaults: { _controller: StartStartBundle:Start:index }
+    
+_test:    
+    pattern:  /test
+    defaults: { _controller: StartStartBundle:Start:test }    	
+
+login:
+    pattern: /login
+    defaults: { _controller: StartStartBundle:Auth:login }
+
+login_check:
+    pattern: /login_check
+
+logout:
+    pattern:   /logout
+
+
 
 _demo_secured:
     resource: "@AcmeDemoBundle/Controller/SecuredController.php"

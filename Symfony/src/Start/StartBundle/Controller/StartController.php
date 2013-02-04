@@ -4,7 +4,6 @@ namespace Start\StartBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-
 class StartController extends Controller
 {
     public function indexAction()

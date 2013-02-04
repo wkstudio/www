@@ -19,9 +19,9 @@ security:
                 
     providers:
         user_db:
-            entity: { class: Start\UserBundle\Entity\User, property: username }
+            entity: { class: Start\StoreBundle\Entity\User, property: username }
     encoders:
-        Start\UserBundle\Entity\User:
+        Start\StoreBundle\Entity\User:
             algorithm:   sha1
             iterations: 1
             encode_as_base64: false              

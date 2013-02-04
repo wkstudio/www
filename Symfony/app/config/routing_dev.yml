@@ -11,6 +11,10 @@ doc:
     pattern: /doc
     defaults: { _controller: StartStartBundle:Doc:index }
 
+doc_view:
+    pattern: /doc-view
+    defaults: { _controller: StartStartBundle:Doc:view }
+
 doc_edit:
     pattern: /doc-edit
     defaults: { _controller: StartStartBundle:Doc:edit }

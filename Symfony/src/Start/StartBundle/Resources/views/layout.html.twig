@@ -4,6 +4,8 @@
         <meta charset="UTF-8" />
         <title>{% block title %}Calm Clinic Center{% endblock %}</title>
         <link rel="stylesheet" href="{{ asset('bundles/calmclinic/css/screen.css') }}" />
+        {% block addjs %}
+        {% endblock %}
     </head>
     <body>
 {% block leftmenu%}

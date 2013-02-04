@@ -22,7 +22,7 @@ class AppKernel extends Kernel
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
-            $bundles[] = new Start\UserBundle\StartUserBundle();
+            $bundles[] = new Start\StoreBundle\StartStoreBundle();
             $bundles[] = new Start\StartBundle\StartStartBundle();
             $bundles[] = new Acme\DemoBundle\AcmeDemoBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();

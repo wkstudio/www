@@ -1,0 +1,26 @@
+{% extends "StartStartBundle::layout.html.twig" %}
+
+{% block title %} Documentation {% endblock %}
+
+
+
+{% block content %}
+<div id="content">
+    <div class="title"><h3>Documentation</h3></div>
+    {% if is_granted('ROLE_ADMIN') %}
+    <input class="control-button" type="button" value="New Document"/>
+    {% endif %}
+    <table border="1" cellpadding="1" cellspacing="0" class="doc-table" width="200px" >
+        <thead ><th>Docs...</th></thead>
+        <tbody>
+    {% for item in doc_items %}
+        <tr><td>
+        <a href="{{ path('doc_view') }}?id={{item.id}}" style="text-decoration: none;">{{item.doc_title}}</a>
+        </td></tr>
+    {% endfor %}        
+
+        
+        </tbody>
+    </table>
+</div>
+{% endblock %}

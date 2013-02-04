@@ -1,3 +1,7 @@
+a:visited{ 
+    color: blue; 
+}
+
 #login_form{
     width: 200px;
     height: 150px;
@@ -27,6 +31,7 @@
 
 .control-button{
     margin: 20px 0px 20px 20px;
+    min-width: 70px;
 }
 
 .doc-table th{
@@ -37,4 +42,14 @@
 .doc-table{ 
     text-align: left; 
     margin-left: 20px;    
+}
+
+.doc-body{ 
+    text-align: left; 
+    margin-left: 20px;    
+}
+
+.edit-text{
+    width: 790px;
+    margin: 0 auto;
 }

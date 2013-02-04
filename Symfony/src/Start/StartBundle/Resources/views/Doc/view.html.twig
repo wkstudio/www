@@ -1,0 +1,17 @@
+{% extends "StartStartBundle::layout.html.twig" %}
+
+{% block title %} Documentation {% endblock %}
+
+
+
+{% block content %}
+<div id="content">
+    <div class="title"><h3>Doc:{{doc.doc_title}}</h3></div>
+    {% if is_granted('ROLE_ADMIN') %}
+    <input class="control-button" type="button" value="EDIT" onclick="window.location.href = '{{url('doc_edit')}}?id={{doc.id}}'"/>
+    {% endif %}
+    <div class="doc-body">    
+    {{doc.doc_body}}
+    </div>
+</div>
+{% endblock %}

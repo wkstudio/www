@@ -1,7 +1,7 @@
 <?php
 
 namespace Start\StartBundle\Controller;
-use Start\UserBundle\Entity\User;
+use Start\StoreBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\SecurityContext;
 
@@ -9,11 +9,6 @@ class AuthController extends Controller
 {
     public function loginAction()
     {
-        /*
-         * The action's view can be rendered using render() method
-         * or @Template annotation as demonstrated in DemoController.
-         *
-         */
         $request = $this->getRequest();
         $session = $request->getSession();
 

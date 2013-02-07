@@ -11,7 +11,7 @@
     <input class="control-button" type="button" value="EDIT" onclick="window.location.href = '{{url('doc_edit')}}?id={{doc.id}}'"/>
     {% endif %}
     <div class="doc-body">    
-    {{doc.doc_body}}
+    {{doc.doc_body|raw}}
     </div>
 </div>
 {% endblock %}

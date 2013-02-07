@@ -9,21 +9,53 @@
 {% block content %}
 <div id="content">
     <div class="title"><h3>Doc:{{doc.doc_title}} [EDIT]</h3></div>
+    <form action="{{ path('doc_edit') }}" method="POST">
+    <input type="hidden" name="doc-id" value="{{doc.id}}"/>
     <table width="100%">
     <tr>
     <td style="text-align: left;">
-    <input type="text" value="{{doc.doc_title}}"/>
+
+    {% if error is defined %}
+    <div class="error">    
+    {{error}}
+    </div>
+    {% endif %}
+
+    <input type="text" name="doc-title"value="{{doc.doc_title}}"/>
     </td>
     <td style="text-align: right;">
-    <input class="control-button" type="button" value="DELETE"/>
+    <input class="control-button" type="button" value="DELETE" onclick="$('#dialog-confirm').dialog('open');"/>
     </td>
     </tr>
     </table>
     <div class="edit-text">
-    <form action="{{ path('doc_edit') }}" method="POST">
-    <textarea class="ckeditor" name="editor1">{{doc.doc_body}}</textarea>
-    <input class="control-button" type="submit" value="SAVE"/>
-    </form>
+    <textarea class="ckeditor" name="doc-body">{{doc.doc_body}}</textarea>
+    <input class="control-button" type="submit" name="save-button" value="SAVE"/>
     </div>
+    </form>    
 </div>
+<div id="dialog-confirm" title="Delete dialog" style="display: none;">
+Are you sure delete this item ?
+</div>
+{% endblock %}
+
+{% block js%}
+ <script>
+$(function() {
+$( "#dialog-confirm" ).dialog({
+resizable: false,
+autoOpen: false,
+height:180,
+modal: true,
+buttons: {
+"Delete": function() {
+window.location.href = '{{url('doc_delete')}}?id={{doc.id}}'
+},
+Cancel: function() {
+$( this ).dialog( "close" );
+}
+}
+});
+});
+</script>
 {% endblock %}

@@ -4,6 +4,9 @@
         <meta charset="UTF-8" />
         <title>{% block title %}Calm Clinic Center{% endblock %}</title>
         <link rel="stylesheet" href="{{ asset('bundles/calmclinic/css/screen.css') }}" />
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.0/themes/base/jquery-ui.css" />
+        <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+        <script src="http://code.jquery.com/ui/1.10.0/jquery-ui.js"></script>        
         {% block addjs %}
         {% endblock %}
     </head>
@@ -16,7 +19,7 @@
         <a href="#">Dashboard</a>
         </td></tr>
         <tr><td>
-        <a href="#">Account</a>
+        <a href="{{path('account')}}">Account</a>
         </td></tr>
         <tr><td>
         <a href="#">Invoices</a>
@@ -29,7 +32,7 @@
         <h3>Manage</h3>
         </td></tr>
         <tr><td>
-        <a href="#">Users</a>
+        <a href="{{path('user_index')}}">Users</a>
         </td></tr> 
         <tr><td>
         <a href="#">Invoices</a>
@@ -52,6 +55,8 @@
 {% block content %}
 <div id="content">
 </div>
+{% endblock %}
+{% block js%}
 {% endblock %}
     </body>
 </html>

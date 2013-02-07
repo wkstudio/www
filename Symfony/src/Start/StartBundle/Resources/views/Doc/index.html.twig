@@ -8,7 +8,7 @@
 <div id="content">
     <div class="title"><h3>Documentation</h3></div>
     {% if is_granted('ROLE_ADMIN') %}
-    <input class="control-button" type="button" value="New Document"/>
+    <input class="control-button" type="button" value="New Document" onclick="window.location.href = '{{url('doc_new')}}'"/>
     {% endif %}
     <table border="1" cellpadding="1" cellspacing="0" class="doc-table" width="200px" >
         <thead ><th>Docs...</th></thead>

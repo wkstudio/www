@@ -1,0 +1,100 @@
+{% extends "StartStartBundle::layout.html.twig" %}
+
+{% block title %} New User {% endblock %}
+
+
+
+{% block content %}
+<div id="content">
+    <div class="title"><h3>Admin: Users: NEW USER</h3></div>
+<form action="{{path('user_add')}}" method="POST">    
+    <table class="new-user-table">
+    <tr>
+        <td>
+            First Name
+        </td>
+        <td>
+            <input type="text" name="first_name" value="{{inp.first_name}}"/>
+            {% if error.first_name is defined %}
+            <span class="error">{{error.first_name}}</span>
+            {% endif%}
+        </td>
+    </tr>
+    <tr>
+    <td>Email</td>
+    <td>
+        <input type="text" name="username" value="{{inp.username}}"/>
+        {% if error.email is defined %}
+        <span class="error">{{error.email}}</span>
+        {% endif%}
+    </td>
+    </tr>
+    <tr>
+    <td>Password</td>
+    <td>
+        <input type="password" name="password" value="{{inp.password}}"/>
+        {% if error.password is defined %}
+        <span class="error">{{error.password}}</span>
+        {% endif%}        
+    </td>
+    </tr>
+    <tr>
+    <td>Phone</td>
+    <td><input type="text" name="phone" value="{{inp.phone}}"/></td>
+    </tr>
+    <tr>
+    <td>Full Mailing Address</td>
+    <td><textarea  name="fm_address" cols="30" rows="5">{{inp.fm_address}}</textarea></td>
+    </tr>
+    <tr>
+    <td>Country</td>
+    <td><input type="text" name="country" value="{{inp.country}}"/></td>
+    </tr>
+    <tr>
+    <td>Contact details of someone close</td>
+    <td><textarea  name="contact_close" cols="30" rows="5">{{inp.contact_close}}</textarea></td>
+    </tr>            
+    <tr>
+    <td>TimeZone</td>
+    <td>
+    <select name="timezone">
+    {% for i in -12..0 %}
+    <option value="{{i}}" {% if i == inp.timezone %} selected="selected" {% endif %}>GMT {{i}}</option>
+    {% endfor %}
+    {% for i in 1..12 %}
+    <option value="{{i}}" {% if i == inp.timezone %}selected="selected" {% endif %}>GMT +{{i}}</option>
+    {% endfor %}    
+    </select>
+    </td>
+    </tr>
+    <tr>
+    <td>Type</td>
+    <td>
+    <select name="usertype">
+    {% for usertype in usertypes %}
+    {% if usertype.id == inp.usertype %}
+    <option value="{{usertype.id}}" selected="selected">{{usertype.usertype}}</option>
+    {% else %}
+    <option value="{{usertype.id}}">{{usertype.usertype}}</option>
+    {% endif %}
+    {% endfor %}
+    </select>
+    </td>
+    </tr>
+    </table>
+    <p><b>Paid by,...</b></p>    
+    <table class="new-user-table">
+    <tr>
+    <td><input type="checkbox" name="pbw" {% if inp.pbw == 'on' %} checked="checked"{% endif %}/>Words</td>
+    <td><input name="pbw_dailytime" type="text" placeholder="daily min." value="{{inp.pbw_dailytime}}"/></td>
+    <td><input name="pbw_rate" type="text" placeholder="rate" value="{{inp.pbw_rate}}"/></td>
+    </tr>
+    <tr>
+    <td><input type="checkbox" name="pbh" {% if inp.pbh == 'on' %} checked="checked"{% endif %}/>Hours</td>
+    <td><input name="pbh_dailytime" type="text" placeholder="daily min." value="{{inp.pbh_dailytime}}"/></td>
+    <td><input name="pbh_rate" type="text" placeholder="rate" value="{{inp.pbh_rate}}"/></td>
+    </tr>
+    </table>
+    <input type="submit" name="sbmt" value="Create User"/>
+</form>
+{% endblock %}

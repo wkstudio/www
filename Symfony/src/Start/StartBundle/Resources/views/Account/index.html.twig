@@ -1,0 +1,68 @@
+{% extends "StartStartBundle::layout.html.twig" %}
+
+{% block title %} Account {% endblock %}
+
+{% block content %}
+<div id="content">
+<div id="wrapper">
+    <div class="title"><h3>Account</h3></div>
+    <form action="{{path('password_update')}}" method="POST">
+        <input type="hidden" name="id" value="{{userinfo.id}}"/>
+        <table>
+        <tr><td>Started Working</td><td colspan="2">{{userinfo.signup_date.date|date('Y-m-d')}}</td></tr>
+        <tr><td width="150px">Primary Responsibilty</td><td colspan="2">{{userinfo.usertype_text}}</td></tr>
+        <tr><td colspan="3" >Deliverables</td></tr>
+        <tr><td colspan="2" style="text-align: center;">Hours</td><td>{{userinfo.pbh_dailytime}} h/day {{userinfo.pbh_rate}}</td></tr>
+        <tr><td colspan="2" style="text-align: center;">Words</td><td>{{userinfo.pbw_dailytime}} words/day {{userinfo.pbw_rate}}</td></tr>
+        </table>
+        <h3>Change Password</h3>
+        <table>
+        <tr><td>Current Password</td><td><input type="password" name="current_password"/></td><td></td></tr>
+        <tr><td>New Password</td><td><input type="password" name="new_password"/></td><td></td></tr>
+        <tr><td>Repeat</td><td><input type="password" name="repeat_password"/></td><td><input type="submit" name="pass_smbt" value="Update"/></td></tr>
+        </table>
+    </form>
+    <h3>Update Account Information</h3>
+    
+    <form action="{{path('account_update')}}" method="POST"> 
+        <input type="hidden" name="id" value="{{userinfo.id}}"/>   
+        <table class="new-user-table">
+        <tr>
+            <td>
+                First Name
+            </td>
+            <td>
+                <input type="text" name="first_name" value="{{userinfo.first_name}}"/>
+            </td>
+        </tr>
+        <tr>
+        <td>Email</td>
+        <td>
+            <input type="text" name="username" value="{{userinfo.username}}"/>
+            {% if error.email is defined %}
+            <span class="error">{{error.email}}</span>
+            {% endif%}
+        </td>
+        </tr>
+        <tr>
+        <td>Phone</td>
+        <td><input type="text" name="phone" value="{{userinfo.phone}}"/></td>
+        </tr>
+        <tr>
+        <td>Full Mailing Address</td>
+        <td><textarea  name="fm_address" cols="30" rows="5">{{userinfo.fm_address}}</textarea></td>
+        </tr>
+        <tr>
+        <td>Country</td>
+        <td><input type="text" name="country" value="{{userinfo.country}}"/></td>
+        </tr>
+        <tr>
+        <td>Contact details of someone close</td>
+        <td><textarea name="contact_close" cols="30" rows="5">{{userinfo.contact_close}}</textarea></td>
+        </tr>            
+        </table>
+        <input type="submit" name="sbmt" value="Update"/>
+    </form>    
+</div>
+</div>
+{% endblock %}

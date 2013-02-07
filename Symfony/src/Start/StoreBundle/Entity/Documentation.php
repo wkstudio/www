@@ -37,4 +37,14 @@ class Documentation
     public function doc_body(){
         return $this->doc_body;
     }
+    
+    public function setTitle($title)
+    {
+        $this->doc_title = $title;
+    }
+    
+    public function setBody($body)
+    {
+        $this->doc_body = $body;
+    }    
 }

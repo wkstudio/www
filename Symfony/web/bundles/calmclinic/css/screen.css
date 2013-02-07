@@ -25,7 +25,7 @@ a:visited{
 
 .title{
     border-bottom: 2px solid blue;
-    width: 200px;
+    width: 400px;
     margin: 0px 0px 10px 20px;
 }
 
@@ -44,6 +44,17 @@ a:visited{
     margin-left: 20px;    
 }
 
+.user-table th{
+    background-color: #CCCCCC; 
+    text-align: left; 
+}
+
+.user-table{ 
+    text-align: left; 
+    margin-left: 20px;
+    width: 500px;    
+}
+
 .doc-body{ 
     text-align: left; 
     margin-left: 20px;    
@@ -52,4 +63,17 @@ a:visited{
 .edit-text{
     width: 790px;
     margin: 0 auto;
+}
+
+.error{
+    color: red;
+}
+
+.new-user-table{
+    text-align: left; 
+    margin-left: 20px;    
+}
+
+#wrapper{
+    margin-left: 20px;
 }

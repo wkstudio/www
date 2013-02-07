@@ -1,0 +1,31 @@
+{% extends "StartStartBundle::layout.html.twig" %}
+
+{% block title %} Users {% endblock %}
+
+
+
+{% block content %}
+<div id="content">
+    <div class="title"><h3>Admin: Users</h3></div>
+    {% if is_granted('ROLE_ADMIN') %}
+    <input class="control-button" type="button" value="New User" onclick="window.location.href = '{{url('user_add')}}'"/>
+    {% endif %}
+    <table border="1" cellpadding="1" cellspacing="0" class="user-table" width="200px" >
+        <thead ><th width="100px">Name</th><th width="100px">Type</th><th width="100px">Status</th><th width="300px">Actions</th></thead>
+        <tbody>
+        {% for euser in users_enable %}
+        <tr><td>{{euser.username|raw}}</td><td>{{euser.usertype}}</td><td>Active</td><td><a href="{{path('user_edit')}}?id={{euser.id}}">view&amp;edit</a>, reports, <a href="{{path('user_switch')}}?id={{euser.id}}">disable</a></td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <br />
+    <table border="1" cellpadding="1" cellspacing="0" class="user-table" width="200px" >
+        <thead ><th width="100px">Name</th><th width="100px">Type</th><th width="100px">Status</th><th width="300px">Actions</th></thead>
+        <tbody>
+        {% for duser in users_disable %}
+        <tr><td>{{duser.username|raw}}</td><td>{{duser.usertype}}</td><td>Disable</td><td><a href="{{path('user_edit')}}?id={{duser.id}}">view&amp;edit</a>, reports, <a href="{{path('user_switch')}}?id={{duser.id}}">enable</a></td></tr>
+        {% endfor %}
+        </tbody>
+    </table>    
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "StartStartBundle::layout.html.twig" %}
+
+{% block title %} Documentation {% endblock %}
+
+{% block addjs %}
+<script type="text/javascript" src="{{ asset('bundles/calmclinic/js/ckeditor/ckeditor.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="title"><h3>Create new document</h3></div>
+    <form action="{{ path('doc_new') }}" method="POST">
+
+    {% if error is defined %}
+    <div class="error">    
+    {{error}}
+    </div>
+    {% endif %}
+    <label for="doc-title">Title:</label>
+    <input type="text" name="doc-title" value="{{doc.doc_title}}"/>
+
+    <div class="edit-text">
+    <label for="doc-body">Text:</label>
+    <textarea class="ckeditor" name="doc-body">{{doc.doc_body}}</textarea>
+    <input class="control-button" type="submit" name="save-button" value="SAVE"/>
+    </div>
+    </form>    
+</div>
+{% endblock %}

@@ -16,6 +16,7 @@
         <td>
             <input type="text" name="first_name" value="{{inp.first_name}}"/>
             {% if error.first_name is defined %}
+            <br />
             <span class="error">{{error.first_name}}</span>
             {% endif%}
         </td>
@@ -25,8 +26,13 @@
     <td>
         <input type="text" name="username" value="{{inp.username}}"/>
         {% if error.email is defined %}
+        <br />
         <span class="error">{{error.email}}</span>
         {% endif%}
+        {% if error.invalid_email is defined %}
+        <br />        
+        <span class="error">{{error.invalid_email}}</span>
+        {% endif%}        
     </td>
     </tr>
     <tr>
@@ -34,6 +40,7 @@
     <td>
         <input type="password" name="password" value="{{inp.password}}"/>
         {% if error.password is defined %}
+        <br />
         <span class="error">{{error.password}}</span>
         {% endif%}        
     </td>

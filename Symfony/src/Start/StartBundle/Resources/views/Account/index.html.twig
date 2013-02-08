@@ -16,6 +16,16 @@
         <tr><td colspan="2" style="text-align: center;">Words</td><td>{{userinfo.pbw_dailytime}} words/day {{userinfo.pbw_rate}}</td></tr>
         </table>
         <h3>Change Password</h3>
+        {% if error.identical is defined %}
+        <span class="error">{{error.identical}}</span>
+        <br />
+        {% endif %}
+        {% if error.incorrect_password is defined %}
+        <span class="error">{{error.incorrect_password}}</span>
+        {% endif %} 
+        {% if error.ok is defined %}
+        <span class="success">{{error.ok}}</span>
+        {% endif %}               
         <table>
         <tr><td>Current Password</td><td><input type="password" name="current_password"/></td><td></td></tr>
         <tr><td>New Password</td><td><input type="password" name="new_password"/></td><td></td></tr>
@@ -39,9 +49,13 @@
         <td>Email</td>
         <td>
             <input type="text" name="username" value="{{userinfo.username}}"/>
-            {% if error.email is defined %}
-            <span class="error">{{error.email}}</span>
+            {% if error.duplicate is defined %}
+            <span class="error">{{error.duplicate}}</span>
+            <br />
             {% endif%}
+            {% if error.invalid_email is defined %}
+            <span class="error">{{error.invalid_email}}</span>
+            {% endif%}            
         </td>
         </tr>
         <tr>

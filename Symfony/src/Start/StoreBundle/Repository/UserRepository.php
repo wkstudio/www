@@ -85,6 +85,7 @@ class UserRepository extends EntityRepository
             ->createQuery('SELECT u.id, 
                                     ut.usertype as usertype_text,
                                     u.username, 
+                                    u.password,
                                     u.first_name, 
                                     u.phone, 
                                     u.fm_address, 
@@ -197,5 +198,27 @@ class UserRepository extends EntityRepository
         }      
                                    
     }
- 
+    
+    public function isPasswordCorrect($uid, $password)
+    {
+        $userinfo = $this->getUserInfo($uid);
+        if(sha1($password) == $userinfo['password'])
+        {
+            return True;
+        }
+        else
+        {
+            return False;    
+        }
+    }
+    
+    public function updatePassword($uid, $password)
+    {
+        $password = sha1($password);
+        $this->getEntityManager()
+                        ->createQuery('UPDATE StartStoreBundle:User u SET u.password = :password WHERE u.id = :uid')
+                        ->setParameter('uid', $uid)
+                        ->setParameter('password', $password)
+                        ->getResult();        
+    }
 }

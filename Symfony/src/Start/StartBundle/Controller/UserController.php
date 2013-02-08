@@ -130,11 +130,12 @@ class UserController extends Controller
     
     private function addValidate()
     {
+        $email = $this->get('request')->get('username');
         if(!$this->get('request')->get('first_name'))
         {
             $this->error['first_name'] = 'Empty name';
         }
-        if(!$this->get('request')->get('username'))
+        if(!$email)
         {
             $this->error['email'] = 'Empty Email';
         } 
@@ -142,12 +143,16 @@ class UserController extends Controller
         {
             $em = $this->getDoctrine()->getEntityManager();
             $isUserDuplicate = $em->getRepository('StartStoreBundle:User')
-                        ->isUserDuplicate($this->get('request')->get('username'));
+                        ->isUserDuplicate($email);
             if($isUserDuplicate)
             {
                 $this->error['email'] = 'User already exist!!!';    
             }            
-        } 
+        }
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL))
+        {
+            $this->error['invalid_email'] = "Email is invalid";
+        }
         if(!$this->get('request')->get('password'))
         {
             $this->error['password'] = 'Empty password';

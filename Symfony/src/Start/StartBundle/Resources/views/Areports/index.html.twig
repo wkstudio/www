@@ -1,0 +1,53 @@
+{% extends "StartStartBundle::layout.html.twig" %}
+
+{% block title %} Admin Reports {% endblock %}
+
+
+
+{% block content %}
+
+<div id="content">
+<div id="wrapper">
+    <div class="title"><h3>Admin : Reports</h3></div>
+    <form action="{{path('admin_reports')}}" method="POST">
+    <table>
+    <tr>
+        <td rowspan="2">
+            <h3 style="display: inline;">Filter:</h3>
+        </td>
+        <td style="text-align: center;">
+            Date from: <input name="date_from" value="{{templ_var.date_from}}" readonly="1"/>
+            Date to: <input name="date_to" value="{{templ_var.date_to}}" readonly="1"/>
+        </td>
+    </tr>
+    <tr>
+    <td style="text-align: center;">
+        <select name="uid">
+            <option value="all">All users</option>
+            {% for user in templ_var.users %}
+            <option value="{{user.getId}}" {% if templ_var.uid == user.getId %}selected="1"{% endif %}>{{user.getUsername}}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" class="control-button" value="Filter"/>
+    </td>
+    </tr>
+    </table>
+    {% set rdata = ''%}
+    {% for report in templ_var.reports %}    
+    <table>
+    {%if rdata != report.data%}<tr bgcolor="gray" style="color: white;"><td>{{report.data}}</td></tr>{%set rdata = report.data%}{% endif %}
+    <tr><td><b>{{report.name}}</b></td></tr>
+    <tr><td>{{report.words}} words {{report.hours}} hours</td></tr>
+    <tr><td>{{report.content}}</td></tr>
+    </table>
+    <br />
+    {% endfor %}    
+    </form>    
+</div>
+</div>
+<script type="text/javascript">
+$( "input[name^=date]" ).datepicker({dateFormat: "yy-mm-dd" });
+
+</script>
+
+{% endblock %}

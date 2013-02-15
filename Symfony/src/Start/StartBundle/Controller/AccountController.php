@@ -12,9 +12,7 @@ class AccountController extends Controller
     {
         $em = $this->getDoctrine()->getEntityManager();
         $userinfo = $em->getRepository('StartStoreBundle:User')->getUserInfo($this->getUser()->getId());
-        $username = $this->getUser()->getUsername();
-        return $this->render('StartStartBundle:Account:index.html.twig', array('name' => $username, 
-                                                                                'userinfo' => $userinfo));        
+        return $this->render('StartStartBundle:Account:index.html.twig', array('userinfo' => $userinfo));        
     }
     
     public function updateAction()
@@ -28,9 +26,7 @@ class AccountController extends Controller
             $em->getRepository('StartStoreBundle:User')->updateAccount($request);
         }               
         $userinfo = $em->getRepository('StartStoreBundle:User')->getUserInfo($this->getUser()->getId());         
-        $username = $this->getUser()->getUsername();
-        return $this->render('StartStartBundle:Account:index.html.twig', array('name' => $username, 
-                                                                                'userinfo' => $userinfo,
+        return $this->render('StartStartBundle:Account:index.html.twig', array('userinfo' => $userinfo,
                                                                                 'error' => $this->error));        
     }
     
@@ -45,9 +41,7 @@ class AccountController extends Controller
             $this->error['ok'] = 'Password Changed';   
         }
         $userinfo = $em->getRepository('StartStoreBundle:User')->getUserInfo($uid);         
-        $username = $this->getUser()->getUsername();
-        return $this->render('StartStartBundle:Account:index.html.twig', array('name' => $username, 
-                                                                                'userinfo' => $userinfo,
+        return $this->render('StartStartBundle:Account:index.html.twig', array('userinfo' => $userinfo,
                                                                                 'error' => $this->error));        
     }
     

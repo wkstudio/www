@@ -13,19 +13,19 @@
     <body>
 {% block leftmenu%}
 <div id="leftMenu">
-    <h3>Hi, {{name}}</h3>
+    <h3>Hi, {{ app.user.username }}</h3>
     <table>
         <tr><td>
-        <a href="#">Dashboard</a>
+        <a href="{{path('dashboard')}}">Dashboard</a>
         </td></tr>
         <tr><td>
         <a href="{{path('account')}}">Account</a>
         </td></tr>
         <tr><td>
-        <a href="#">Invoices</a>
+        <a href="{{path('user_invoice')}}">Invoices</a>
         </td></tr>
         <tr><td>
-        <a href="#">Reports</a>
+        <a href="{{path('user_reports')}}">Reports</a>
         </td></tr>                        
         <tr><td>
 {% if is_granted('ROLE_ADMIN') %}        
@@ -35,10 +35,10 @@
         <a href="{{path('user_index')}}">Users</a>
         </td></tr> 
         <tr><td>
-        <a href="#">Invoices</a>
+        <a href="{{path('admin_invoices')}}">Invoices</a>
         </td></tr>           
         <tr><td>
-        <a href="#">Reports</a>
+        <a href="{{path('admin_reports')}}">Reports</a>
         </td></tr>
         <tr><td>
 {% endif %}

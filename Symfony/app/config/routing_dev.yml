@@ -54,7 +54,36 @@ account_update:
 password_update:
     pattern: /password-update
     defaults: { _controller: StartStartBundle:Account:password_update}
-                
+
+dashboard:
+    pattern: /report-new
+    defaults: { _controller: StartStartBundle:Dashboard:report_new}
+
+user_reports:
+    pattern: /user-reports
+    defaults: { _controller: StartStartBundle:Ureports:index}
+
+
+admin_reports:
+    pattern: /admin-reports
+    defaults: { _controller: StartStartBundle:Areports:index}
+                    
+user_invoice:
+    pattern: /user-invoice
+    defaults: { _controller: StartStartBundle:Uinvoice:index}                    
+
+user_invoice_delete:
+    pattern: /user-invoice-delete
+    defaults: { _controller: StartStartBundle:Uinvoice:delete}
+
+toggle_invoice:
+    pattern: /toggle-invoice
+    defaults: { _controller: StartStartBundle:Ainvoice:toggle}
+    
+admin_invoices:
+    pattern: /admin-invoices
+    defaults: { _controller: StartStartBundle:Ainvoice:index} 
+                        
 login:
     pattern: /login
     defaults: { _controller: StartStartBundle:Auth:login }
@@ -65,16 +94,6 @@ login_check:
 logout:
     pattern:   /logout
 
-
-
-_demo_secured:
-    resource: "@AcmeDemoBundle/Controller/SecuredController.php"
-    type:     annotation
-
-_demo:
-    resource: "@AcmeDemoBundle/Controller/DemoController.php"
-    type:     annotation
-    prefix:   /demo
 
 _wdt:
     resource: "@WebProfilerBundle/Resources/config/routing/wdt.xml"

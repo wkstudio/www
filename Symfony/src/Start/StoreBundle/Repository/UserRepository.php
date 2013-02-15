@@ -5,7 +5,7 @@ use Doctrine\ORM\EntityRepository;
 use Start\StoreBundle\Entity\User;
 class UserRepository extends EntityRepository
 {
-    public function findAllOrderedByName()
+    public function getAllUsers()
     {
         return $this->getEntityManager()
             ->createQuery('SELECT u FROM StartStoreBundle:User u ORDER BY u.username ASC')

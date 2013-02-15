@@ -18,7 +18,7 @@ a:visited{
 
 #content{
     width: 800px;
-    height: 800px;
+    min-height: 800px;
     float: left;
     border: 1px solid black;
 }
@@ -80,4 +80,35 @@ a:visited{
 
 #wrapper{
     margin-left: 20px;
+}
+
+.report-table{
+    
+}
+
+.report-table th, .all-report-table-records th{
+    background-color: #CCCCCC; 
+    text-align: left; 
+}
+
+.mandatory{
+    color: red;
+}
+
+.invoice-table th{
+    background-color: #CCCCCC;    
+}
+
+.paid{
+    background-color: green;
+    color: white;
+    display: block;
+    width: 100%;
+}
+
+.notpaid{
+    background-color: red;
+    color: white;
+    display: block;
+    width: 100%;    
 }

@@ -1,0 +1,67 @@
+{% extends "StartStartBundle::layout.html.twig" %}
+
+{% block title %} Admin Invoices {% endblock %}
+
+
+
+{% block content %}
+<div id="content">
+<div id="wrapper">
+    <div class="title"><h3>Admin : Invoices</h3></div>
+    <form action="{{path('admin_invoices')}}" method="POST">
+        <table>
+            <tr>
+                <td>Filter</td>
+                <td>
+                    <select name="uid">
+                        <option value="all">All users</option>
+                        {% for user in templ_var.users %}
+                        <option value="{{user.getId}}" {% if templ_var.uid == user.getId %}selected="1"{% endif %}>{{user.getUsername}}</option>
+                        {% endfor %}
+                    </select>    
+                </td>
+                <td>
+                    <input type="checkbox" name="unpaid" {% if templ_var.unpaid == '0' %} checked="checked"{% endif %} /> Unpaid
+                </td>
+                <td>
+                    <input name="sbmt" type="submit" value="Filter"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+<table cellspacing="5" style="text-align: center;">
+<thead><th>Invoice</th><th>Sent</th><th>From To</th><th>PayPal</th><th>Sum</th><th></th><th></th></thead>
+<tbody>
+{% for invoice in templ_var.invoices %}
+<tr>
+    <td><a href="{{templ_var.http_upload}}{{invoice.pdf}}">download</a></td>
+    <td>{{invoice.submited_date.date|date('Y-m-d')}}</td>
+    <td>{{invoice.date_from.date|date('Y-m-d')}} - {{invoice.date_to.date|date('Y-m-d')}}</td>
+    <td>{{invoice.paypal}}</td>
+    <td>{{invoice.summa}}</td>
+    <td width="80px">{% if invoice.paid == '1' %}<span id="paid{{invoice.id}}" class="paid">Paid</span>{% else %}<span id="paid{{invoice.id}}" class="notpaid">Not Paid</span>{% endif %}</td>
+    <td><input id="invoice{{invoice.id}}" type="button" value="paid"/></td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+<script type="text/javascript">
+$("input[id^='invoice']").click(function(){
+    id = $(this).attr('id').replace('invoice', '');
+    if($("#paid" + id).attr('class') == 'paid')
+    {
+       $("#paid" + id).attr('class', 'notpaid').text('Not Paid');
+       data = '0'; 
+    }
+    else
+    {
+       $("#paid" + id).attr('class', 'paid').text('Paid');
+       data = '1'; 
+    }
+    $.post("{{url('toggle_invoice')}}", { flag: data, id:id } );
+    
+});
+</script>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "StartStartBundle::layout.html.twig" %}
+
+{% block title %} User invoice {% endblock %}
+
+
+
+{% block content %}
+<div id="content">
+<div id="wrapper">
+    <div class="title"><h3>Invoices</h3></div>
+    <form method='post'  enctype='multipart/form-data'>
+    {% if error.date is defined %}<span class="error">{{error.date}}</span>{% endif %}
+    {% if templ_var.success is defined %}<span class="success">{{templ_var.success}}</span>{% endif %}
+    <table>
+    <tr><td>Date from:<span class="mandatory">*</span><input name="date_from" readonly="1" value="{{templ_var.date_from}}"/></td><td>Date to: <span class="mandatory">*</span><input name="date_to" readonly="1" value="{{templ_var.date_to}}"/></td></tr>
+    </table>
+    <table>
+    <tr><td>Pay Pal<span class="mandatory">*</span></td><td><input name="paypal" placeholder="E-mail address" value="{{templ_var.paypal}}"/>{% if error.paypal is defined %}<span class="error">{{error.paypal}}</span>{% endif %}</td></tr>
+    <tr><td>Sum<span class="mandatory">*</span></td><td><input name="sum" placeholder="0.00" value="{{templ_var.sum}}"/>{% if error.sum is defined %}<span class="error">{{error.sum}}</span>{% endif %}</td></tr>
+    <tr><td>Invoice Nr.:<span class="mandatory">*</span></td><td><input name="invoice_nr" value="{{templ_var.invoice_nr}}"/>{% if error.invoice_nr is defined %}<span class="error">{{error.invoice_nr}}</span>{% endif %}</td></tr>
+    <tr><td colspan="2">Attach invoice PDF<span class="mandatory">*</span></td></tr>
+    <tr><td><input name="pdf" type="file" title="Choose the invoice PDF on your hard drive" value="{{templ_var.pdf}}"/>{% if error.pdf is defined %}<span class="error">{{error.pdf}}</span>{% endif %}</td></tr>
+    <tr><td colspan="2">Add comment</td></tr>
+    <tr><td colspan="2"><textarea name="comment" cols="40" rows="5"></textarea></td></tr>
+    <tr><td colspan="2"><input name="sbmt" type="submit" value="Submit invoice"/></td></tr>
+    </table>
+    </form>
+    <h3>Previous invoices</h3>
+    <table class="invoice-table" cellpadding="0" cellspacing="0" border="1" style="text-align: center;">
+    <thead><th>Submited</th><th>Date range</th><th>Sum</th><th>Paid status</th><th></th><th></th></thead>
+    <tbody>
+    {% for invoice in templ_var.invoices %}
+    <tr>
+    <td>{{invoice.getSubmitedDate.date|date('Y-m-d')}}</td>
+    <td>{{invoice.date_from.date|date('Y-m-d')}} - {{invoice.date_to.date|date('Y-m-d')}}</td>
+    <td width="60px">$ {{invoice.summa}}</td>
+    <td>{% if invoice.paid == "1" %}<span class="paid">Paid</span>{% else %}<span class="notpaid">Not Paid</span>{% endif %}</td>
+    <td width="120px"><a href="{{templ_var.http_upload}}{{invoice.pdf}}">Download invoice</a></td>
+    <td width="50px">{% if invoice.paid == "0" %}<a class="delete" href="{{path('user_invoice_delete')}}?id={{invoice.id}}" >Delete</a>{% endif %}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+</div>
+</div>
+<div id="dialog-confirm" title="Delete dialog" style="display: none;">
+Are you sure delete this item ?
+</div>
+<script type="text/javascript">
+$( "input[name^=date]" ).datepicker({dateFormat: "yy-mm-dd" });
+
+$('a.delete').click(function(e) {
+e.preventDefault();
+$('#dialog-confirm').data('link', this).dialog('open');
+});
+
+$( "#dialog-confirm" ).dialog({
+resizable: false,
+autoOpen: false,
+height:180,
+modal: true,
+    buttons: {
+        "Delete": function() {
+        window.location = $(this).data('link').href;
+        },
+        Cancel: function() {
+        $( this ).dialog( "close" );
+        }
+    }
+});
+
+
+</script>
+{% endblock %}

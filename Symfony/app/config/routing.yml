@@ -1,8 +1,96 @@
-# Internal routing configuration to handle ESI
-# ****** WARNING ******
-# This route should be enabled with caution as it can open a security vulnerability
-# see http://symfony.com/blog/security-release-symfony-2-0-20-and-2-1-5-released for more information
-# ****** WARNING ******
-#_internal:
-#    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
-#    prefix:   /_internal
+
+_start:
+    pattern:  /
+    defaults: { _controller: StartStartBundle:Start:index }
+    
+_test:    
+    pattern:  /test
+    defaults: { _controller: StartStartBundle:Start:test }
+
+doc:
+    pattern: /doc
+    defaults: { _controller: StartStartBundle:Doc:index }
+
+doc_view:
+    pattern: /doc-view
+    defaults: { _controller: StartStartBundle:Doc:view }
+
+doc_edit:
+    pattern: /doc-edit
+    defaults: { _controller: StartStartBundle:Doc:edit }
+
+doc_delete:
+    pattern: /doc-delete
+    defaults: { _controller: StartStartBundle:Doc:delete } 
+    
+doc_new:
+    pattern: /doc-new
+    defaults: { _controller: StartStartBundle:Doc:new }       
+
+user_index:
+    pattern: /users
+    defaults: { _controller: StartStartBundle:User:index }
+    
+user_add:
+    pattern: /user-add
+    defaults: { _controller: StartStartBundle:User:add}
+    
+user_edit:
+    pattern: /user-edit
+    defaults: { _controller: StartStartBundle:User:edit}    
+
+user_switch:
+    pattern: /user-switch
+    defaults: { _controller: StartStartBundle:User:switch}
+
+account:
+    pattern: /account
+    defaults: { _controller: StartStartBundle:Account:index}
+
+account_update:
+    pattern: /account-update
+    defaults: { _controller: StartStartBundle:Account:update}
+
+password_update:
+    pattern: /password-update
+    defaults: { _controller: StartStartBundle:Account:password_update}
+
+dashboard:
+    pattern: /report-new
+    defaults: { _controller: StartStartBundle:Dashboard:report_new}
+
+user_reports:
+    pattern: /user-reports
+    defaults: { _controller: StartStartBundle:Ureports:index}
+
+
+admin_reports:
+    pattern: /admin-reports
+    defaults: { _controller: StartStartBundle:Areports:index}
+                    
+user_invoice:
+    pattern: /user-invoice
+    defaults: { _controller: StartStartBundle:Uinvoice:index}                    
+
+user_invoice_delete:
+    pattern: /user-invoice-delete
+    defaults: { _controller: StartStartBundle:Uinvoice:delete}
+
+toggle_invoice:
+    pattern: /toggle-invoice
+    defaults: { _controller: StartStartBundle:Ainvoice:toggle}
+    
+admin_invoices:
+    pattern: /admin-invoices
+    defaults: { _controller: StartStartBundle:Ainvoice:index} 
+                        
+login:
+    pattern: /login
+    defaults: { _controller: StartStartBundle:Auth:login }
+
+login_check:
+    pattern: /login_check
+
+logout:
+    pattern:   /logout
+

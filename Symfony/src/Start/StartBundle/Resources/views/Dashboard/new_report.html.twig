@@ -1,0 +1,38 @@
+{% extends "StartStartBundle::layout.html.twig" %}
+
+{% block title %} Dashboard {% endblock %}
+
+
+
+{% block content %}
+<div id="content">
+    <div class="title"><h3>Dashboard</h3></div>
+    <div id="wrapper">
+    <form action="{{path('dashboard')}}" method="POST">
+        <h3 class="subheader">New Report</h3>
+        {% if templ_var.allok is defined %}<p class="success">{{templ_var.allok}}</p>{% endif %}
+        <table class="report-table">
+            <tr><td>Date: </td><td colspan="2"><input size="15" type="text" name="date" id="datepicker" readonly="1" value="{% if templ_var.date is defined %}{{templ_var.date}}{% endif %}"/>{% if error.date is defined %}<span class="error">{{error.date}}</span>{% endif %}</td></tr>
+            <tr {% if templ_var.hidehours is defined %}style="display: none;"{% endif %}>
+            <td>Hours Worked</td>
+            <td colspan="2"><input size="6" type="text" name="hours" placeholder='hours' value="{% if templ_var.hours is defined %}{{templ_var.hours}}{% endif %}"/>
+            <input size="3" type="text" name="minutes" placeholder='minutes' value="{% if templ_var.minutes is defined %}{{templ_var.minutes}}{% endif %}"/>{% if error.subject is defined %}<span class="error">{{error.subject}}</span>{% endif %}</td></tr>
+            <tr {% if templ_var.hidewords is defined %}style="display: none;"{% endif %}><td>Words Written</td><td colspan="2"><input size="6" type="text" name="words" placeholder='words' value="{% if templ_var.words is defined %}{{templ_var.words}}{% endif %}"/></td></tr>
+            <tr><td colspan="3">{% if error.content is defined %}<span class="error">{{error.content}}</span><br />{% endif %}<textarea name="content" cols="50" rows="8" placeholder='Reports goes here'>{% if templ_var.content is defined %}{{templ_var.content}}{% endif %}</textarea></td></tr>
+            <tr><td colspan="3"><input  type="checkbox" name="sendmail"/> Report needs immediate attention</td></tr>
+            <tr><td colspan="3"><input type="submit" name="sbmt" value="Send" class="control-button"/></td></tr>
+        </table>
+    </form>
+    </div>
+
+</div>
+<script>
+$(function() {
+$( "#datepicker" ).datepicker({ minDate: 0, maxDate: "+1D", dateFormat: "yy-mm-dd" });
+});
+
+$("input[name='hours'], input[name='minutes'], input[name='words']").keyup(function (){
+    $(this).val($(this).val().replace(/[^\d\.]+/g,''));    
+});
+</script>
+{% endblock %}

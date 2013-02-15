@@ -1,0 +1,73 @@
+{% extends "StartStartBundle::layout.html.twig" %}
+
+{% block title %} Reports {% endblock %}
+
+
+
+{% block content %}
+<div id="content">
+<div id="wrapper">
+    <div class="title"><h3>Reports</h3></div>
+    <form action="{{path('user_reports')}}" method="POST">
+    <p><h3 style="display: inline;">Filter:</h3> Date from: <input name="date_from" value="{{templ_var.date_from}}" readonly="1"/>
+                Date to: <input name="date_to" value="{{templ_var.date_to}}" readonly="1"/>
+                <input type="submit" class="control-button" value="Filter"/></p>
+    </form>
+    <h3>Counts for Shown Reports</h3>
+    <table cellpadding="0" cellspacing="0" border="1">
+    <thead class="report-table"><th width="150px">Deliverable</th><th width="250px">Count</th></thead>
+    <tbody>
+    <tr><td>Hours</td><td>{{templ_var.time}}</td></tr>
+    <tr><td>Words</td><td>{{templ_var.words}}</td></tr>
+    </tbody>
+    </table>
+    <h3>All records</h3>
+    <table cellpadding="0" cellspacing="0" border="1">
+    <thead class="all-report-table-records"><th width="80px">Date</th><th width="100px">Reportables</th><th width="200px">Content</th><th width="150px">Actions</th></thead>
+    <tbody>
+    {% for report in  templ_var.reports_data %}
+    <tr>
+    <td>{{report.getpostdata.date|date('Y-m-d')}}</td>
+    <td>{% if report.getminutes > 0 %}{{'%.2f'|format(report.getminutes/60)}} hours{% endif %} {% if report.getwords > 0 %}{{report.getwords}} words{% endif %}</td>
+    <td>{{report.getcutcontent}}</td>
+    <td style="text-align: center;">{% if loop.last %}<a onclick="report_edit(event)" href="">EDIT</a>{% endif %}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+    <div class="edit" style="display: none;">
+        <form id="edform" action="{{path('user_reports')}}" method="POST">
+        {% for report in  templ_var.reports_data %}
+        {% if loop.last %}    
+        <input type="hidden" name="repId" value="{{report.getId}}"/>
+        <table>
+        <tr><td>Hours</td><td><input size="4" name="hours" type="text" value="{{(report.getminutes/60)//1}}"/></td><td>min</td><td><input size="4" name="minutes" type="text" value="{{((report.getminutes/60) - (report.getminutes/60)//1)*60}}"/></td></tr>
+        <tr><td>Words</td><td colspan="3"><input name="words" type="text" value="{{report.getwords}}"/></td></tr>
+        </table>
+        {% endif %}
+        {% endfor %}
+        </form>        
+    </div>
+</div>    
+</div>
+<script type="text/javascript">
+$( "input[name^=date]" ).datepicker({dateFormat: "yy-mm-dd" });
+
+function report_edit(event)
+{
+    event.preventDefault();
+    $( ".edit" ).dialog({ modal: true, 
+                        disabled: true,
+                        heigth: 400,
+                        width: 400,
+    buttons: {
+Save: function() {
+$("#edform").submit();
+},
+Cancel: function() {
+$( this ).dialog( "close" );
+}
+     }});
+}
+</script>
+{% endblock %}

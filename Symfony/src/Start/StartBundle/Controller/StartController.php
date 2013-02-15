@@ -8,9 +8,7 @@ class StartController extends Controller
 {
     public function indexAction()
     {
-        $user = $this->getUser();
-        $name = $user->getUsername();   
-        return $this->render('StartStartBundle:Start:index.html.twig', array('name' => $name));
+        return $this->render('StartStartBundle:Start:index.html.twig');
 
     }
     
@@ -20,9 +18,8 @@ class StartController extends Controller
             throw new AccessDeniedException();
         }
 
-        $user = $this->getUser();
-        $name = $user->getUsername(); 
-        return $this->render('StartStartBundle:Start:index.html.twig', array('name' => $name));
+
+        return $this->render('StartStartBundle:Start:index.html.twig');
 
     }    
     

@@ -1,7 +1,7 @@
 <?php
 
 namespace Start\StartBundle\Controller;
-
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class UserController extends Controller
@@ -10,21 +10,19 @@ class UserController extends Controller
     
     public function indexAction()
     {
+        if (false === $this->get('security.context')->isGranted('ROLE_ADMIN'))
+        {
+            throw new AccessDeniedException();
+        }        
         $em = $this->getDoctrine()->getEntityManager();
         $users_enable = $em->getRepository('StartStoreBundle:User')
                     ->getEnableUsers();
-        /*echo"<pre>";                    
-        print_r($users_enable);                    
-        echo"</pre>";*/            
+          
         $users_disable = $em->getRepository('StartStoreBundle:User')
                     ->getDisableUsers();
-        /*echo"<pre>";                    
-        print_r($users_disable);                    
-        echo"</pre>";*/                               
-        $username = $this->getUser()->getUsername();
+                             
         return $this->render('StartStartBundle:User:index.html.twig', array('users_enable' => $users_enable,
-                                                                           'users_disable' => $users_disable, 
-                                                                           'name' => $username));
+                                                                           'users_disable' => $users_disable));
 
     }
     
@@ -36,8 +34,7 @@ class UserController extends Controller
             $usertypes = $em->getRepository('StartStoreBundle:Usertype')
                         ->getUserTypes();
             $inp = $this->storeTemplateVars();                   
-            $username = $this->getUser()->getUsername();
-            return $this->render('StartStartBundle:User:add.html.twig', array('inp' => $inp, 'name' => $username, 'usertypes' => $usertypes));
+            return $this->render('StartStartBundle:User:add.html.twig', array('inp' => $inp, 'usertypes' => $usertypes));
         }
         else
         {
@@ -54,9 +51,8 @@ class UserController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
                 $usertypes = $em->getRepository('StartStoreBundle:Usertype')
                             ->getUserTypes();
-                                    
-                $username = $this->getUser()->getUsername();
-                return $this->render('StartStartBundle:User:add.html.twig', array('inp' => $inp, 'name' => $username, 'usertypes' => $usertypes, 'error' => $this->error));                
+
+                return $this->render('StartStartBundle:User:add.html.twig', array('inp' => $inp, 'usertypes' => $usertypes, 'error' => $this->error));                
             }
         }        
     }
@@ -69,8 +65,7 @@ class UserController extends Controller
             $usertypes = $em->getRepository('StartStoreBundle:Usertype')
                         ->getUserTypes();
             $inp = $em->getRepository('StartStoreBundle:User')->getUserInfo($this->get('request')->get('id'));
-            $username = $this->getUser()->getUsername();        
-            return $this->render('StartStartBundle:User:edit.html.twig', array('inp' => $inp, 'name' => $username, 'usertypes' => $usertypes, 'error' => $this->error));
+            return $this->render('StartStartBundle:User:edit.html.twig', array('inp' => $inp, 'usertypes' => $usertypes, 'error' => $this->error));
         }
         else
         {
@@ -87,8 +82,7 @@ class UserController extends Controller
                 $usertypes = $em->getRepository('StartStoreBundle:Usertype')
                             ->getUserTypes();
                 $inp = $this->storeTemplateVars();
-                $username = $this->getUser()->getUsername();        
-                return $this->render('StartStartBundle:User:edit.html.twig', array('inp' => $inp, 'name' => $username, 'usertypes' => $usertypes, 'error' => $this->error));                
+                return $this->render('StartStartBundle:User:edit.html.twig', array('inp' => $inp, 'usertypes' => $usertypes, 'error' => $this->error));                
             }
             
         }                            

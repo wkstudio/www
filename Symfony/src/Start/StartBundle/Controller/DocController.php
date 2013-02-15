@@ -13,9 +13,7 @@ class DocController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
         $doc_items = $em->getRepository('StartStoreBundle:Documentation')
                     ->getAllDocs();
-                    
-        $username = $this->getUser()->getUsername();
-        return $this->render('StartStartBundle:Doc:index.html.twig', array('doc_items' => $doc_items, 'name' => $username));
+        return $this->render('StartStartBundle:Doc:index.html.twig', array('doc_items' => $doc_items));
 
     }
     
@@ -24,8 +22,7 @@ class DocController extends Controller
         $em = $this->getDoctrine()->getEntityManager();
         $doc_item = $em->getRepository('StartStoreBundle:Documentation')
                     ->getDocById($this->get('request')->get('id'));
-        $username = $this->getUser()->getUsername();  
-        return $this->render('StartStartBundle:Doc:view.html.twig', array('name' => $username, 'doc' => $doc_item));
+        return $this->render('StartStartBundle:Doc:view.html.twig', array('doc' => $doc_item));
 
     }
     
@@ -36,8 +33,7 @@ class DocController extends Controller
             $em = $this->getDoctrine()->getEntityManager();
             $doc_item = $em->getRepository('StartStoreBundle:Documentation')
                         ->getDocById($this->get('request')->get('id'));
-            $username = $this->getUser()->getUsername();  
-            return $this->render('StartStartBundle:Doc:edit.html.twig', array('name' => $username, 'doc' => $doc_item));
+            return $this->render('StartStartBundle:Doc:edit.html.twig', array('doc' => $doc_item));
         }
         else
         {
@@ -53,12 +49,10 @@ class DocController extends Controller
             }
             else
             {
-                $username = $this->getUser()->getUsername();
                 $doc_item['id'] =  $this->get('request')->get('doc-id');
                 $doc_item['doc_title'] =  $this->get('request')->get('doc-title');
                 $doc_item['doc_body'] =  $this->get('request')->get('doc-body'); 
-                return $this->render('StartStartBundle:Doc:edit.html.twig', array('name' => $username, 
-                                                                                    'doc' => $doc_item, 
+                return $this->render('StartStartBundle:Doc:edit.html.twig', array('doc' => $doc_item, 
                                                                                     'error' => $this->error));                
             }
         }
@@ -71,8 +65,7 @@ class DocController extends Controller
         {
             $doc['doc_title'] = '';
             $doc['doc_body'] = '';
-            $username = $this->getUser()->getUsername();  
-            return $this->render('StartStartBundle:Doc:new.html.twig', array('name' => $username, 'doc' => $doc));
+            return $this->render('StartStartBundle:Doc:new.html.twig', array('doc' => $doc));
         }
         else
         {
@@ -87,11 +80,9 @@ class DocController extends Controller
             }
             else
             {
-                $username = $this->getUser()->getUsername();
                 $doc_item['doc_title'] =  $this->get('request')->get('doc-title');
                 $doc_item['doc_body'] =  $this->get('request')->get('doc-body'); 
-                return $this->render('StartStartBundle:Doc:new.html.twig', array('name' => $username, 
-                                                                                    'doc' => $doc_item, 
+                return $this->render('StartStartBundle:Doc:new.html.twig', array('doc' => $doc_item, 
                                                                                     'error' => $this->error));                
             }
         }

@@ -44,7 +44,10 @@ class DocController extends Controller
                 $body = $this->get('request')->get('doc-body');    
                 $em = $this->getDoctrine()->getEntityManager();
                 $doc_item = $em->getRepository('StartStoreBundle:Documentation')
-                            ->updateDocument($id, $title, $body);            
+                            ->updateDocument($id, $title, $body);
+                /*Add to log*/
+                $em->getRepository('StartStoreBundle:Logging')->addToLog($this->getUser()->getId(), "Admin: edited documentation - {$title}");
+                /*end Add to log*/                                        
                 return $this->redirect($this->generateUrl('doc_view')."?id=".$id);
             }
             else

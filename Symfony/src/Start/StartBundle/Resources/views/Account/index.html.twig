@@ -6,14 +6,17 @@
 <div id="content">
 <div id="wrapper">
     <div class="title"><h3>Account</h3></div>
+    {% if data.success is defined %}
+    <b class="success">{{data.success}}</b>
+    {% endif %}
     <form action="{{path('password_update')}}" method="POST">
         <input type="hidden" name="id" value="{{userinfo.id}}"/>
         <table>
         <tr><td>Started Working</td><td colspan="2">{{userinfo.signup_date.date|date('Y-m-d')}}</td></tr>
         <tr><td width="150px">Primary Responsibilty</td><td colspan="2">{{userinfo.usertype_text}}</td></tr>
         <tr><td colspan="3" >Deliverables</td></tr>
-        <tr><td colspan="2" style="text-align: center;">Hours</td><td>{{userinfo.pbh_dailytime}} h/day {{userinfo.pbh_rate}}</td></tr>
-        <tr><td colspan="2" style="text-align: center;">Words</td><td>{{userinfo.pbw_dailytime}} words/day {{userinfo.pbw_rate}}</td></tr>
+        {% if userinfo.pbh == '1'%}<tr><td colspan="2" style="text-align: center;">Hours</td><td>{{userinfo.pbh_dailytime}} h/day - {{userinfo.pbh_rate}} ($/hour)</td></tr>{% endif %}
+        {% if userinfo.pbw == '1'%}<tr><td colspan="2" style="text-align: center;">Words</td><td>{{userinfo.pbw_dailytime}} words/day - {{userinfo.pbw_rate}} ($/word)</td></tr>{% endif %}
         </table>
         <h3>Change Password</h3>
         {% if error.identical is defined %}
@@ -39,12 +42,20 @@
         <table class="new-user-table">
         <tr>
             <td>
-                First Name
+                Public First Name
             </td>
             <td>
                 <input type="text" name="first_name" value="{{userinfo.first_name}}"/>
             </td>
         </tr>
+        <tr>
+            <td>
+                Full Name
+            </td>
+            <td>
+                <input type="text" name="full_name" value="{{userinfo.full_name}}"/>
+            </td>
+        </tr>        
         <tr>
         <td>Email</td>
         <td>
@@ -55,9 +66,18 @@
             {% endif%}
             {% if error.invalid_email is defined %}
             <span class="error">{{error.invalid_email}}</span>
-            {% endif%}            
+            {% endif%}
+            {% if error.confirm_email is defined %}
+            <span class="error">{{error.confirm_email}}</span>
+            {% endif%}                        
         </td>
         </tr>
+        <tr>
+        <td>Email confirm</td>
+        <td>
+            <input type="text" name="username_confirm" value="{% if error.confirm_email is not defined%}{{userinfo.username}}{% endif %}"/>
+        </td>
+        </tr>        
         <tr>
         <td>Phone</td>
         <td><input type="text" name="phone" value="{{userinfo.phone}}"/></td>

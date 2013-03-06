@@ -14,7 +14,7 @@
         <thead ><th width="100px">Name</th><th width="100px">Type</th><th width="100px">Status</th><th width="300px">Actions</th></thead>
         <tbody>
         {% for euser in users_enable %}
-        <tr><td>{{euser.username|raw}}</td><td>{{euser.usertype}}</td><td>Active</td><td><a href="{{path('user_edit')}}?id={{euser.id}}">view&amp;edit</a>, <a href="{{path('admin_reports')}}?uid={{euser.id}}">reports</a>, <a href="{{path('user_switch')}}?id={{euser.id}}">disable</a></td></tr>
+        <tr><td>{{euser.full_name|raw}}</td><td>{{euser.usertype}}</td><td>Active</td><td><a href="{{path('user_edit')}}?id={{euser.id}}">view&amp;edit</a>, <a href="{{path('admin_reports')}}?uid={{euser.id}}">reports</a>, <a href="{{path('user_switch')}}?id={{euser.id}}">disable</a></td></tr>
         {% endfor %}
         </tbody>
     </table>
@@ -23,7 +23,7 @@
         <thead ><th width="100px">Name</th><th width="100px">Type</th><th width="100px">Status</th><th width="300px">Actions</th></thead>
         <tbody>
         {% for duser in users_disable %}
-        <tr><td>{{duser.username|raw}}</td><td>{{duser.usertype}}</td><td>Disable</td><td><a href="{{path('user_edit')}}?id={{duser.id}}">view&amp;edit</a>, <a href="{{path('admin_reports')}}?uid={{duser.id}}">reports</a>, <a href="{{path('user_switch')}}?id={{duser.id}}">enable</a></td></tr>
+        <tr><td>{{duser.full_name|raw}}</td><td>{{duser.usertype}}</td><td>Disable</td><td><a href="{{path('user_edit')}}?id={{duser.id}}">view&amp;edit</a>, <a href="{{path('admin_reports')}}?uid={{duser.id}}">reports</a>, <a href="{{path('user_switch')}}?id={{duser.id}}">enable</a></td></tr>
         {% endfor %}
         </tbody>
     </table>    

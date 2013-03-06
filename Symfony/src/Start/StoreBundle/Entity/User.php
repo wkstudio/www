@@ -50,6 +50,12 @@ class User implements UserInterface
      * 
      */
     private $first_name;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * 
+     */
+    private $full_name;
     
     /**
      * @ORM\Column(type="integer", length=11)
@@ -64,7 +70,7 @@ class User implements UserInterface
     private $pbw_daily;   
  
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="float")
      * 
      */
     private $pbw_rate; 
@@ -82,7 +88,7 @@ class User implements UserInterface
     private $pbh_daily;   
  
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="float")
      * 
      */
     private $pbh_rate; 
@@ -185,6 +191,11 @@ class User implements UserInterface
     {
         $this->first_name = $name;
     }
+
+    public function setFullname($name)
+    {
+        $this->full_name = $name;
+    }
     
     public function setUsername($name){
         $this->username = $name;
@@ -232,6 +243,11 @@ class User implements UserInterface
     
     public function eraseCredentials(){
         
+    }
+    
+    public function setSignUpDate($date)
+    {
+        $this->signup_date = $date;
     }
     
     

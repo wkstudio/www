@@ -6,13 +6,15 @@
 
 {% block content %}
 <div id="content">
+<div id="wrapper">
     <div class="title"><h3>Admin: Users:: {{inp.username}}</h3></div>
+    <input type="button" id="reset_password" value="Reset Password"/><span id='show_password' style="display: none;"><span class="success">Password reset to: </span><b id="reseted_password" class="error"></b></span>
 <form action="{{path('user_edit')}}" method="POST"> 
     <input type="hidden" name="id" value="{{inp.id}}"/>   
     <table class="new-user-table">
     <tr>
         <td>
-            First Name
+            Public First Name
         </td>
         <td>
             <input type="text" name="first_name" value="{{inp.first_name}}"/>
@@ -22,13 +24,27 @@
         </td>
     </tr>
     <tr>
+        <td>
+            Full Name
+        </td>
+        <td>
+            <input type="text" name="full_name" value="{{inp.full_name}}"/>
+            {% if error.full_name is defined %}
+            <span class="error">{{error.full_name}}</span>
+            {% endif%}
+        </td>
+    </tr>    
+    <tr>
     <td>Email</td>
     <td>
-        {{inp.username}}
-        <input type="hidden" name="username" value="{{inp.username}}"/>
-        {% if error.email is defined %}
-        <span class="error">{{error.email}}</span>
+
+        <input type="text" name="username" value="{{inp.username}}"/>
+        {% if error.invalid_email is defined %}
+        <span class="error">{{error.invalid_email}}</span>
         {% endif%}
+        {% if error.email_duplicate is defined %}
+        <span class="error">{{error.email_duplicate}}</span>
+        {% endif%}        
     </td>
     </tr>
     <tr>
@@ -51,11 +67,8 @@
     <td>TimeZone</td>
     <td>
     <select name="timezone">
-    {% for i in -12..0 %}
-    <option value="{{i}}" {% if i == inp.timezone %} selected="selected" {% endif %}>GMT {{i}}</option>
-    {% endfor %}
-    {% for i in 1..12 %}
-    <option value="{{i}}" {% if i == inp.timezone %}selected="selected" {% endif %}>GMT +{{i}}</option>
+    {% for timezone in data.timezones %}
+    <option value="{{timezone.getId}}" {% if timezone.getId == inp.timezone %} selected="selected" {% endif %}>{{timezone.name}} GMT {{timezone.offset}}</option>
     {% endfor %}    
     </select>
     </td>
@@ -80,14 +93,24 @@
     <tr>
     <td><input type="checkbox" name="pbw" {% if (inp.pbw == 'on' or inp.pbw == '1') %} checked="checked"{% endif %}/>Words</td>
     <td><input name="pbw_dailytime" type="text" placeholder="daily min." value="{{inp.pbw_dailytime}}"/></td>
-    <td><input name="pbw_rate" type="text" placeholder="rate" value="{{inp.pbw_rate}}"/></td>
+    <td><input name="pbw_rate" type="text" placeholder="rate" value="{{inp.pbw_rate}}"/> ($/word)</td>
     </tr>
     <tr>
     <td><input type="checkbox" name="pbh" {% if (inp.pbh == 'on' or  inp.pbh == '1') %} checked="checked"{% endif %}/>Hours</td>
     <td><input name="pbh_dailytime" type="text" placeholder="daily min." value="{{inp.pbh_dailytime}}"/></td>
-    <td><input name="pbh_rate" type="text" placeholder="rate" value="{{inp.pbh_rate}}"/></td>
+    <td><input name="pbh_rate" type="text" placeholder="rate" value="{{inp.pbh_rate}}"/> ($/hour)</td>
     </tr>
     </table>
     <input type="submit" name="sbmt" value="Update"/>
 </form>
+</div>
+</div>
+<script type="text/javascript">
+$("#reset_password").click(function(){
+    $.post('{{url('password_reset')}}',{id:{{inp.id}}}, function(data){
+        $("#reseted_password").text(data);
+        $('#show_password').show();        
+    });
+});
+</script>
 {% endblock %}

@@ -11,7 +11,7 @@
     <table class="new-user-table">
     <tr>
         <td>
-            First Name
+            Public First Name
         </td>
         <td>
             <input type="text" name="first_name" value="{{inp.first_name}}"/>
@@ -21,6 +21,18 @@
             {% endif%}
         </td>
     </tr>
+    <tr>
+        <td>
+            Full Name
+        </td>
+        <td>
+            <input type="text" name="full_name" value="{{inp.full_name}}"/>
+            {% if error.full_name is defined %}
+            <br />
+            <span class="error">{{error.full_name}}</span>
+            {% endif%}
+        </td>
+    </tr>    
     <tr>
     <td>Email</td>
     <td>
@@ -65,12 +77,9 @@
     <td>TimeZone</td>
     <td>
     <select name="timezone">
-    {% for i in -12..0 %}
-    <option value="{{i}}" {% if i == inp.timezone %} selected="selected" {% endif %}>GMT {{i}}</option>
+    {% for timezone in data.timezones %}
+    <option value="{{timezone.getId}}" {% if timezone.getId == inp.timezone %} selected="selected" {% endif %}>{{timezone.name}} GMT {{timezone.offset}}</option>
     {% endfor %}
-    {% for i in 1..12 %}
-    <option value="{{i}}" {% if i == inp.timezone %}selected="selected" {% endif %}>GMT +{{i}}</option>
-    {% endfor %}    
     </select>
     </td>
     </tr>

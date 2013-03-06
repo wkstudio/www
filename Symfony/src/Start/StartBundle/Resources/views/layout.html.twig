@@ -26,9 +26,9 @@
         </td></tr>
         <tr><td>
         <a href="{{path('user_reports')}}">Reports</a>
-        </td></tr>                        
+        </td></tr> 
+{% if is_granted('ROLE_ADMIN') %}                                
         <tr><td>
-{% if is_granted('ROLE_ADMIN') %}        
         <h3>Manage</h3>
         </td></tr>
         <tr><td>
@@ -41,7 +41,10 @@
         <a href="{{path('admin_reports')}}">Reports</a>
         </td></tr>
         <tr><td>
-{% endif %}
+        <a href="{{path('admin_logging')}}">Logging</a>
+        </td></tr>        
+{% endif %}        
+        <tr><td>
         </td></tr>        
         <tr><td>
         <a href="{{ path('doc') }}">Documentation</a>

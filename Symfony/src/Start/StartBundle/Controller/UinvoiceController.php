@@ -37,7 +37,10 @@ class UinvoiceController extends Controller
                                                                         $fileLink,
                                                                         $comment); 
             $this->cleanTemplateVars(); 
-            $this->templ_var['success'] = 'Invoice saved.';          
+            $this->templ_var['success'] = 'Invoice saved.';
+            /*Add to log*/
+            $em->getRepository('StartStoreBundle:Logging')->addToLog($this->getUser()->getId(), "Submitted an invoice");
+            /*end Add to log*/                      
         }
         else
         {
@@ -46,7 +49,7 @@ class UinvoiceController extends Controller
         
         $this->templ_var['invoices'] = $em->getRepository('StartStoreBundle:Invoice')->getInvoices($uid);
 
-        $this->templ_var['http_upload'] = $this->container->getParameter('uploadpath');
+
         return $this->render('StartStartBundle:Uinvoice:index.html.twig', array('error' => $this->error,
                                                                                  'templ_var' => $this->templ_var ));        
     }

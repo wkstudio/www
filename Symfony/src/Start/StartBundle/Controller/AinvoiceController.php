@@ -25,11 +25,11 @@ class AinvoiceController extends Controller
         $unpaid  = $this->get('request')->get('unpaid');
         
         empty($uid) ? $this->templ_var['uid'] = 'all' : $this->templ_var['uid'] = $uid;        
-        empty($unpaid) ? $this->templ_var['unpaid'] = 'all' : $this->templ_var['unpaid'] = '0';
+        $unpaid == 'on' || !$this->get('request')->get('sbmt') ? $this->templ_var['unpaid'] = '0' : $this->templ_var['unpaid'] = 'all';
         
         $this->prepareInvoices();
         
-        $this->templ_var['http_upload'] = $this->container->getParameter('uploadpath');
+
         return $this->render('StartStartBundle:Ainvoice:index.html.twig', array('error' => $this->error,
                                                                                  'templ_var' => $this->templ_var ));        
     }
@@ -44,6 +44,25 @@ class AinvoiceController extends Controller
         $response = new Response(json_encode(array('response' => 'ok')));
         $response->headers->set('Content-Type', 'application/json');
         return $response;
+    }
+    
+    public function downloadAction()
+    {
+        $DIR = $_SERVER['DOCUMENT_ROOT']."/Symfony/web/uploads/";
+        $file = $DIR.htmlspecialchars($this->get('request')->get('q'));
+        if(file_exists($file)) {
+            header('Content-Type: application/pdf');
+            header('Content-Disposition: attachment;filename="'.htmlspecialchars($this->get('request')->get('q')).'"');
+            header('Content-length: '.filesize($file));
+            header('Cache-Control: no-cache');
+            header("Content-Transfer-Encoding: chunked"); 
+         
+            readfile($file);
+            exit;
+        } else {
+            header("HTTP/1.0 404 Not Found");
+        }
+        return new Response();        
     }
     
     private function prepareInvoices()

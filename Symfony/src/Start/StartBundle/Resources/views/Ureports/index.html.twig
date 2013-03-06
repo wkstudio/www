@@ -30,19 +30,22 @@
     <td>{{report.getpostdata.date|date('Y-m-d')}}</td>
     <td>{% if report.getminutes > 0 %}{{'%.2f'|format(report.getminutes/60)}} hours{% endif %} {% if report.getwords > 0 %}{{report.getwords}} words{% endif %}</td>
     <td>{{report.getcutcontent}}</td>
-    <td style="text-align: center;">{% if loop.last %}<a onclick="report_edit(event)" href="">EDIT</a>{% endif %}</td>
+    <td style="text-align: center;">{% if loop.first  and data.report_edit == 1 %}<a onclick="report_edit(event)" href="">EDIT</a>{% endif %}</td>
     </tr>
     {% endfor %}
     </tbody>
     </table>
+    <br />
+    <div class="success">Reports not shown due to filtering: {{data.not_shown}}</div>
     <div class="edit" style="display: none;">
         <form id="edform" action="{{path('user_reports')}}" method="POST">
         {% for report in  templ_var.reports_data %}
-        {% if loop.last %}    
+        {% if loop.first and data.report_edit == 1 %}    
         <input type="hidden" name="repId" value="{{report.getId}}"/>
         <table>
         <tr><td>Hours</td><td><input size="4" name="hours" type="text" value="{{(report.getminutes/60)//1}}"/></td><td>min</td><td><input size="4" name="minutes" type="text" value="{{((report.getminutes/60) - (report.getminutes/60)//1)*60}}"/></td></tr>
         <tr><td>Words</td><td colspan="3"><input name="words" type="text" value="{{report.getwords}}"/></td></tr>
+        <tr><td>Content</td><td colspan="3"><textarea cols="50" rows="5" name="content">{{report.getcontent}}</textarea></td></tr>
         </table>
         {% endif %}
         {% endfor %}
@@ -59,7 +62,7 @@ function report_edit(event)
     $( ".edit" ).dialog({ modal: true, 
                         disabled: true,
                         heigth: 400,
-                        width: 400,
+                        width: 700,
     buttons: {
 Save: function() {
 $("#edform").submit();

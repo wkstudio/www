@@ -28,7 +28,7 @@
             <option value="{{user.getId}}" {% if templ_var.uid == user.getId %}selected="1"{% endif %}>{{user.getUsername}}</option>
             {% endfor %}
         </select>
-        <input type="submit" class="control-button" value="Filter"/>
+        <input type="submit" name="sbmt" class="control-button" value="Filter"/>
     </td>
     </tr>
     </table>
@@ -36,17 +36,61 @@
     {% for report in templ_var.reports %}    
     <table>
     {%if rdata != report.data%}<tr bgcolor="gray" style="color: white;"><td>{{report.data}}</td></tr>{%set rdata = report.data%}{% endif %}
-    <tr><td><b>{{report.name}}</b></td></tr>
+    <tr><td><b>{{report.name}}</b> <input type="button" onclick="edit(event, {{report.id}});" value="EDIT"/></td></tr>
     <tr><td>{{report.words}} words {{report.hours}} hours</td></tr>
     <tr><td>{{report.content}}</td></tr>
     </table>
     <br />
-    {% endfor %}    
-    </form>    
+    {% endfor %} 
+    </form> 
+     <div class="edit" style="display: none;">
+        <input type="hidden" id="repId" value=""/>
+        <table>
+        <tr><td>Hours</td><td><input size="4" id="hours" type="text" value=""/></td><td>min</td><td><input size="4" id="minutes" type="text" value=""/></td></tr>
+        <tr><td>Words</td><td colspan="3"><input id="words" type="text" value=""/></td></tr>
+        <tr><td>Content</td><td colspan="3"><textarea cols="50" rows="5" id="repcontent"></textarea></td></tr>
+        </table>
+    </div>      
 </div>
 </div>
 <script type="text/javascript">
 $( "input[name^=date]" ).datepicker({dateFormat: "yy-mm-dd" });
+
+
+
+
+function edit(event, id)
+{
+    event.preventDefault();
+    $.post("{{url('admin_get_report')}}", {id:id}, function(data){
+        $("#repId").val(data.id);
+        $("#repcontent").text(data.content);
+        $("#words").val(data.words);
+        $("#hours").val(Math.floor(data.minutes/60));
+        $("#minutes").val(data.minutes - Math.floor(data.minutes/60)*60);
+        $( ".edit" ).dialog({ modal: true, 
+                                disabled: true,
+                                heigth: 400,
+                                width: 700,
+            buttons: {
+                Save: function() {
+                    id = $("#repId").val();
+                    content = $("#repcontent").val();
+                    words = $("#words").val();
+                    minutes = parseInt($("#hours").val()*60) + parseInt($("#minutes").val());
+                    $.post("{{url('admin_update_report')}}", {id:id, content:content, words:words, minutes:minutes}, function(){
+                        $(".edit").dialog( "close" );
+                        $("input[name='sbmt']").click();
+                    });
+                },
+                Cancel: function() {
+                $( this ).dialog( "close" );
+                }
+            }
+        });
+    });
+}
+
 
 </script>
 

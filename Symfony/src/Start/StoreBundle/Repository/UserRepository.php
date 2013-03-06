@@ -15,14 +15,14 @@ class UserRepository extends EntityRepository
     public function getEnableUsers()
     {
         return $this->getEntityManager()
-            ->createQuery('SELECT u.id, u.username, ut.usertype FROM StartStoreBundle:User u LEFT JOIN StartStoreBundle:Usertype ut  WITH u.usertype = ut.id WHERE u.status = \'1\' ORDER BY ut.usertype')
+            ->createQuery('SELECT u.id, u.username, u.full_name, ut.usertype FROM StartStoreBundle:User u LEFT JOIN StartStoreBundle:Usertype ut  WITH u.usertype = ut.id WHERE u.status = \'1\' ORDER BY ut.usertype')
             ->getResult();
     }
     
     public function getDisableUsers()
     {
         return $this->getEntityManager()
-            ->createQuery('SELECT u.id, u.username, ut.usertype FROM StartStoreBundle:User u LEFT JOIN StartStoreBundle:Usertype ut  WITH u.usertype = ut.id WHERE u.status = \'0\' ORDER BY ut.usertype')
+            ->createQuery('SELECT u.id, u.username, u.full_name, ut.usertype FROM StartStoreBundle:User u LEFT JOIN StartStoreBundle:Usertype ut  WITH u.usertype = ut.id WHERE u.status = \'0\' ORDER BY ut.usertype')
             ->getResult();
     }
     
@@ -38,7 +38,8 @@ class UserRepository extends EntityRepository
         $this->getEntityManager()
             ->createQuery('UPDATE StartStoreBundle:User u 
                                 SET u.username = :username, 
-                                    u.first_name = :first_name, 
+                                    u.first_name = :first_name,
+                                    u.full_name = :full_name, 
                                     u.phone = :phone, 
                                     u.fm_address = :fm_address, 
                                     u.country = :country, 
@@ -54,6 +55,7 @@ class UserRepository extends EntityRepository
             ->setParameter('id', $request->get('id'))
             ->setParameter('username', $request->get('username'))
             ->setParameter('first_name', $request->get('first_name'))
+            ->setParameter('full_name', $request->get('full_name'))
             ->setParameter('phone', $request->get('phone'))
             ->setParameter('fm_address', $request->get('fm_address'))
             ->setParameter('country', $request->get('country'))
@@ -86,7 +88,8 @@ class UserRepository extends EntityRepository
                                     ut.usertype as usertype_text,
                                     u.username, 
                                     u.password,
-                                    u.first_name, 
+                                    u.first_name,
+                                    u.full_name, 
                                     u.phone, 
                                     u.fm_address, 
                                     u.country, 
@@ -109,7 +112,9 @@ class UserRepository extends EntityRepository
     public function addUser($request)
     {
         $user = new User();
+        $user->setSignUpDate(new \DateTime());
         $user->setFirstname($request->get('first_name'));
+        $user->setFullname($request->get('full_name'));
         $user->setUsername($request->get('username'));
         $user->setPassword(sha1($request->get('password')));
         $user->setTimezone($request->get('timezone'));
@@ -167,12 +172,14 @@ class UserRepository extends EntityRepository
         $this->getEntityManager()
                 ->createQuery('UPDATE StartStoreBundle:User u 
                                 SET u.first_name = :first_name,
+                                    u.full_name = :full_name,
                                     u.username = :username,
                                     u.phone = :phone,
                                     u.fm_address = :fm_address,
                                     u.country = :country,
                                     u.contact_close = :contact_close WHERE u.id = :id')
                 ->setParameter('first_name', $request->get('first_name'))
+                ->setParameter('full_name', $request->get('full_name'))
                 ->setParameter('username', $request->get('username'))
                 ->setParameter('phone', $request->get('phone'))
                 ->setParameter('fm_address', $request->get('fm_address'))
@@ -182,10 +189,10 @@ class UserRepository extends EntityRepository
                 ->getResult();        
     }
     
-    public function isEmailDuplicate($id, $email)
+    public function isEmailDuplicate($uid, $email)
     {
-        $result = $this->getEntityManager()->createQuery('SELECT u.username FROM StartStoreBundle:User u WHERE (u.id <> :id AND u.username = :email)')
-                                ->setParameter('id', $id)
+        $result = $this->getEntityManager()->createQuery('SELECT u.username FROM StartStoreBundle:User u WHERE (u.id <> :uid AND u.username = :email)')
+                                ->setParameter('uid', $uid)
                                 ->setParameter('email', $email)
                                 ->getResult();
         if(count($result) > 0)

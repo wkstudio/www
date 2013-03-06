@@ -18,14 +18,6 @@ class AuthController extends Controller
         } else {
             $error = $session->get(SecurityContext::AUTHENTICATION_ERROR);
         }
-                 
-       /* $user = new User();
-        $user->setUsername('user2');
-        $user->setPassword('pass1');
-        
-        $em = $this->getDoctrine()->getEntityManager();
-        $em->persist($user);
-        $em->flush();*/
                 
         $title = 'Login Form';
         return $this->render('StartStartBundle:Auth:login.html.twig', array('title' => $title, 'last_username' => $session->get(SecurityContext::LAST_USERNAME),

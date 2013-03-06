@@ -8,6 +8,10 @@
 <div id="content">
     <div class="title"><h3>Dashboard</h3></div>
     <div id="wrapper">
+    {% if templ_var.presentReportToday is defined %}
+    {% if templ_var.allok is defined %}<p class="success">{{templ_var.allok}}</p>{% endif %}
+    <p class="success">The report has been sent</p>
+    {% else %}
     <form action="{{path('dashboard')}}" method="POST">
         <h3 class="subheader">New Report</h3>
         {% if templ_var.allok is defined %}<p class="success">{{templ_var.allok}}</p>{% endif %}
@@ -23,6 +27,7 @@
             <tr><td colspan="3"><input type="submit" name="sbmt" value="Send" class="control-button"/></td></tr>
         </table>
     </form>
+    {% endif %}
     </div>
 
 </div>

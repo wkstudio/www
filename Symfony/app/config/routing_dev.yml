@@ -42,7 +42,11 @@ user_edit:
 user_switch:
     pattern: /user-switch
     defaults: { _controller: StartStartBundle:User:switch}
-
+    
+password_reset:    
+    pattern: /password-reset
+    defaults: { _controller: StartStartBundle:User:passwordreset}
+    
 account:
     pattern: /account
     defaults: { _controller: StartStartBundle:Account:index}
@@ -80,10 +84,27 @@ toggle_invoice:
     pattern: /toggle-invoice
     defaults: { _controller: StartStartBundle:Ainvoice:toggle}
     
+download_invoice:
+    pattern: /download-invoice
+    defaults: { _controller: StartStartBundle:Ainvoice:download}    
+    
 admin_invoices:
     pattern: /admin-invoices
-    defaults: { _controller: StartStartBundle:Ainvoice:index} 
-                        
+    defaults: { _controller: StartStartBundle:Ainvoice:index}
+     
+admin_get_report:
+    pattern: /admin-getreport
+    defaults: { _controller: StartStartBundle:Areports:getreport} 
+
+admin_update_report:
+    pattern: /admin-updatereport
+    defaults: { _controller: StartStartBundle:Areports:updatereport} 
+
+admin_logging:
+    pattern: /admin-logging
+    defaults: { _controller: StartStartBundle:Alogging:index} 
+
+                                
 login:
     pattern: /login
     defaults: { _controller: StartStartBundle:Auth:login }
@@ -93,6 +114,7 @@ login_check:
 
 logout:
     pattern:   /logout
+    
 
 
 _wdt:

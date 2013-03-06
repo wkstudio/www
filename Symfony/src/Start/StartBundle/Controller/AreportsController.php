@@ -3,6 +3,7 @@
 namespace Start\StartBundle\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class AreportsController extends Controller
 {
@@ -27,8 +28,34 @@ class AreportsController extends Controller
         empty($uid) ? $this->templ_var['uid'] = 'all' : $this->templ_var['uid'] = $uid;
         
         $this->prepareReports();
-                                                                                                        
+                                                                                         
         return $this->render('StartStartBundle:Areports:index.html.twig', array('templ_var' => $this->templ_var ));        
+    }
+    
+    public function getreportAction()
+    {
+        $id = $this->get('request')->get('id');
+        $em = $this->getDoctrine()->getEntityManager();
+        $report = $em->getRepository('StartStoreBundle:Report')->getReportById($id);
+        $rep['id'] = $id; 
+        $rep['content'] = $report->getContent();
+        $rep['words'] = $report->getWords();
+        $rep['minutes'] = $report->getMinutes();
+        $response = new Response(json_encode($rep));
+        $response->headers->set('Content-Type', 'application/json');
+        return $response;       
+    }
+    
+    public function updatereportAction()
+    {
+        $request = $this->get('request');
+        $id = $request->get('id');
+        $minutes = $request->get('minutes');
+        $words = $request->get('words');
+        $content = $request->get('content');
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->getRepository('StartStoreBundle:Report')->updateReport($id, $minutes, $words, $content);
+        return new Response();
     }
     
     private function prepareReports()
@@ -37,12 +64,14 @@ class AreportsController extends Controller
         $reports = $em->getRepository('StartStoreBundle:Report')->getReportsDataWithUsername($this->templ_var['date_from'],
                                                                                                     $this->templ_var['date_to'],
                                                                                                    $this->templ_var['uid']);
+        $this->templ_var['reports'] = array();                                                                                         
         $i = 0;                                                                                                    
         foreach($reports as $report)
         {
             ob_start();
             print_r($report[0]);
             ob_get_clean();
+            $this->templ_var['reports'][$i]['id'] = $report[0]->getId();
             $this->templ_var['reports'][$i]['data'] = date("Y-m-d l", strtotime($report[0]->getPostData()->date));
             $this->templ_var['reports'][$i]['name'] = $report['first_name'];
             $this->templ_var['reports'][$i]['hours'] = round($report[0]->getMinutes()/60, 2);

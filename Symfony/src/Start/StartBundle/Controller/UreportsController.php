@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class UreportsController extends Controller
 {
     private $templ_var = array();
+    private $data = array();
     
     public function indexAction()
     {
@@ -15,8 +16,9 @@ class UreportsController extends Controller
         {
             $minutes = $this->get('request')->get('hours')*60 + $this->get('request')->get('minutes');
             $words = $this->get('request')->get('words');
+            $content = $this->get('request')->get('content');
             $em = $this->getDoctrine()->getEntityManager(); 
-            $em->getRepository('StartStoreBundle:Report')->updateReport($id, $minutes, $words);            
+            $em->getRepository('StartStoreBundle:Report')->updateReport($id, $minutes, $words, $content);            
         }
         $date_from  = $this->get('request')->get('date_from');
         $date_to  = $this->get('request')->get('date_to');
@@ -24,15 +26,44 @@ class UreportsController extends Controller
         empty($date_to) ? $this->templ_var['date_to'] = date('Y-m-d', time()) : $this->templ_var['date_to'] = $date_to;
         $this->getWordsHoursSummary();
         $this->getReportsData();
-        return $this->render('StartStartBundle:Ureports:index.html.twig', array('templ_var' => $this->templ_var ));        
+        $this->data['not_shown'] = $this->getNotShownReports();
+        return $this->render('StartStartBundle:Ureports:index.html.twig', array('templ_var' => $this->templ_var, 'data' => $this->data ));        
+    }
+    
+    private function getNotShownReports()
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $countAllReports = $em->getRepository('StartStoreBundle:Report')->getCountReports($this->getUser()->getId());
+        $countFilteredReports = count($this->templ_var['reports_data']);
+       return $countAllReports - $countFilteredReports; 
     }
     
     private function getReportsData()
     {
+        $this->templ_var['reports_data'] = array();
         $em = $this->getDoctrine()->getEntityManager(); 
         $this->templ_var['reports_data'] = $em->getRepository('StartStoreBundle:Report')->getReportsData($this->templ_var['date_from'], 
                                                                             $this->templ_var['date_to'], 
                                                                             $this->getUser()->getId());
+        $this->checkLastReportForEdit();                                                                         
+    }
+    
+    private function checkLastReportForEdit()
+    {
+        if(isset($this->templ_var['reports_data'][0]))
+        {
+            ob_start();
+            print_r( $this->templ_var['reports_data'][0]);
+            ob_get_clean();
+            if(strtotime($this->templ_var['reports_data'][0]->getPostData()->date) < strtotime("-1 day", Time()))
+            {
+                $this->data['report_edit'] = 0;
+            }
+            else
+            {
+               $this->data['report_edit'] = 1; 
+            }
+        }        
     }
     
     private function getWordsHoursSummary()

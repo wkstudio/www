@@ -85,8 +85,14 @@ class Report
         $this->content = $content;
     }
     
+    public function getContent()
+    {
+        return $this->content;
+    }    
+    
     public function getCutContent($len = 10)
     {
         return substr($this->content, 0, $len);
     }
+   
 }

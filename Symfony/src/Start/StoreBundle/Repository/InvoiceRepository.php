@@ -31,13 +31,13 @@ class InvoiceRepository extends EntityRepository
             if($paid == 'all')
             {
                 $invoices = $this->getEntityManager()
-                ->createQuery('SELECT i FROM StartStoreBundle:Invoice i')
+                ->createQuery('SELECT i FROM StartStoreBundle:Invoice i ORDER BY i.submited_date DESC')
                 ->getResult();
             }
             else
             {
                 $invoices = $this->getEntityManager()
-                ->createQuery('SELECT i FROM StartStoreBundle:Invoice i WHERE i.paid = :paid')
+                ->createQuery('SELECT i FROM StartStoreBundle:Invoice i WHERE i.paid = :paid ORDER BY i.submited_date DESC')
                 ->setParameter('paid', $paid)
                 ->getResult();                
             }            
@@ -47,14 +47,14 @@ class InvoiceRepository extends EntityRepository
             if($paid == 'all')
             {
                 $invoices = $this->getEntityManager()
-                ->createQuery('SELECT i FROM StartStoreBundle:Invoice i WHERE i.uid = :uid')
+                ->createQuery('SELECT i FROM StartStoreBundle:Invoice i WHERE i.uid = :uid ORDER BY i.submited_date DESC')
                 ->setParameter('uid', $uid)
                 ->getResult();
             }
             else
             {
                 $invoices = $this->getEntityManager()
-                ->createQuery('SELECT i FROM StartStoreBundle:Invoice i WHERE i.uid = :uid AND i.paid = :paid')
+                ->createQuery('SELECT i FROM StartStoreBundle:Invoice i WHERE i.uid = :uid AND i.paid = :paid ORDER BY i.submited_date DESC')
                 ->setParameter('uid', $uid)
                 ->setParameter('paid', $paid)
                 ->getResult();            

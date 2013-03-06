@@ -33,9 +33,9 @@
     <tr>
     <td>{{invoice.getSubmitedDate.date|date('Y-m-d')}}</td>
     <td>{{invoice.date_from.date|date('Y-m-d')}} - {{invoice.date_to.date|date('Y-m-d')}}</td>
-    <td width="60px">$ {{invoice.summa}}</td>
+    <td width="60px">$ {{invoice.summa| number_format(2)}}</td>
     <td>{% if invoice.paid == "1" %}<span class="paid">Paid</span>{% else %}<span class="notpaid">Not Paid</span>{% endif %}</td>
-    <td width="120px"><a href="{{templ_var.http_upload}}{{invoice.pdf}}">Download invoice</a></td>
+    <td width="120px"><a href="{{url('download_invoice')}}?q={{invoice.pdf}}">Download invoice</a></td>
     <td width="50px">{% if invoice.paid == "0" %}<a class="delete" href="{{path('user_invoice_delete')}}?id={{invoice.id}}" >Delete</a>{% endif %}</td>
     </tr>
     {% endfor %}

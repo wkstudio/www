@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class AccountController extends Controller
 {
     private $error;
+    private $data;
     
     public function indexAction()
     {
@@ -20,14 +21,21 @@ class AccountController extends Controller
         $request = $this->get('request');
         $id = $request->get('id');
         $email = $request->get('username');
+        $email_confirm = $request->get('username_confirm');
         $em = $this->getDoctrine()->getEntityManager();
-        if($this->validateEmail($id, $email, $em))
+        if($this->validateEmail($id, $email, $email_confirm, $em))
         {
             $em->getRepository('StartStoreBundle:User')->updateAccount($request);
+            $this->data['success'] = "Account updated successfully";
+            /*Add to log*/
+            $em->getRepository('StartStoreBundle:Logging')->addToLog($this->getUser()->getId(), "Account: updated details");
+            /*end Add to log*/            
         }               
-        $userinfo = $em->getRepository('StartStoreBundle:User')->getUserInfo($this->getUser()->getId());         
+        $userinfo = $em->getRepository('StartStoreBundle:User')->getUserInfo($this->getUser()->getId());
+
         return $this->render('StartStartBundle:Account:index.html.twig', array('userinfo' => $userinfo,
-                                                                                'error' => $this->error));        
+                                                                                'error' => $this->error,
+                                                                                'data' => $this->data));        
     }
     
     public function password_updateAction()
@@ -38,11 +46,17 @@ class AccountController extends Controller
         if($this->validatePassword($uid, $em))
         {
             $em->getRepository('StartStoreBundle:User')->updatePassword($uid, $this->get('request')->get('new_password'));
-            $this->error['ok'] = 'Password Changed';   
+            $this->error['ok'] = 'Password Changed';
+            $this->data['success'] = "Password updated successfully";  
+            /*Add to log*/
+            $em->getRepository('StartStoreBundle:Logging')->addToLog($this->getUser()->getId(), "Account: Changed password");
+            /*end Add to log*/              
         }
-        $userinfo = $em->getRepository('StartStoreBundle:User')->getUserInfo($uid);         
+        $userinfo = $em->getRepository('StartStoreBundle:User')->getUserInfo($uid); 
+               
         return $this->render('StartStartBundle:Account:index.html.twig', array('userinfo' => $userinfo,
-                                                                                'error' => $this->error));        
+                                                                                'error' => $this->error,
+                                                                                'data' => $this->data));        
     }
     
     private function isNewPasswordsIdentical()
@@ -57,7 +71,7 @@ class AccountController extends Controller
         }
     }
     
-    private function validateEmail($id, $email, $em)
+    private function validateEmail($id, $email, $email_confirm, $em)
     {
         $isDuplicate = $em->getRepository('StartStoreBundle:User')->isEmailDuplicate($id, $email);
         if($isDuplicate)
@@ -67,6 +81,10 @@ class AccountController extends Controller
         if(!filter_var($email, FILTER_VALIDATE_EMAIL))
         {
             $this->error['invalid_email'] = "Email is invalid";
+        }
+        if($email != $email_confirm)
+        {
+            $this->error['confirm_email'] = "Emails are not identical";
         }
         if($this->error)
         {

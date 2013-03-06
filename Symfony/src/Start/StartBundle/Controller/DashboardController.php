@@ -27,9 +27,20 @@ class DashboardController extends Controller
             {
                 $this->sendEmailMessage($username, $date, $content);   
             }
+            if($em->getRepository('StartStoreBundle:Report')->presentReportToday($uid))
+            {
+                $this->templ_var['presentReportToday'] = "1";
+            }
+            /*Add to log*/
+            $em->getRepository('StartStoreBundle:Logging')->addToLog($this->getUser()->getId(), "Submitted a report");
+            /*end Add to log*/ 
             return $this->render('StartStartBundle:Dashboard:new_report.html.twig', array('templ_var' => $this->templ_var));
         }        
-        $this->storeTemplateVars();        
+        $this->storeTemplateVars();
+        if($em->getRepository('StartStoreBundle:Report')->presentReportToday($uid))
+        {
+            $this->templ_var['presentReportToday'] = "1";
+        }        
         return $this->render('StartStartBundle:Dashboard:new_report.html.twig', array('error' => $this->error, 
                                                                                         'templ_var' => $this->templ_var));        
     }
